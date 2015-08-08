@@ -1,6 +1,8 @@
+#Following http://www.binarytides.com/python-socket-programming-tutorial/
 import socket
 import sys
-#Following http://www.binarytides.com/python-socket-programming-tutorial/
+from thread import *
+
 HOST = ''
 PORT = 8888
 
@@ -18,17 +20,22 @@ print 'Socket bind complete'
 s.listen(10)
 print 'Socket now listening'
 
+def clientthread(conn):
+ conn.send('Welcome to the server. Type something and hit enter\n')
+ 
+ #infinite loop so that function does not therminate and thread does not end.
+ while True:
+  data = conn.recv(1024)
+  reply = 'OK....' + data
+  if not data:
+   break
+  conn.sendall(reply)
+ conn.close()
+ 
+
 #now keep talking with the client
 while 1:
  conn, addr = s.accept()
  print 'Connected with ' + addr[0] + ':' + str(addr[1])
- 
- data = conn.recv(1024)
- reply = 'OK...' + data
- if not data:
-  break
- 
- conn.sendall(reply)
-
- conn.close()
+ start_new_thread(clientthread ,(conn,))
 s.close()
