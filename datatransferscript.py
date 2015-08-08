@@ -38,3 +38,7 @@ except socket.error:
  sys.exit()
 
 print 'Message send successfully'
+
+reply = s.recv(4096)
+s.close()
+print reply
