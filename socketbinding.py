@@ -14,3 +14,11 @@ except socket.error , msg:
  sys.exit()
 
 print 'Socket bind complete'
+
+s.listen(10)
+print 'Socket now listening'
+
+#wait to accept a connection - blocking call
+conn, addr = s.accept()
+
+print 'Connected with ' + addr[0] + ':' + str(addr[1])
