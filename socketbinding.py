@@ -1,6 +1,6 @@
 import socket
 import sys
-
+#Following http://www.binarytides.com/python-socket-programming-tutorial/
 HOST = ''
 PORT = 8888
 
@@ -18,7 +18,17 @@ print 'Socket bind complete'
 s.listen(10)
 print 'Socket now listening'
 
-#wait to accept a connection - blocking call
-conn, addr = s.accept()
+#now keep talking with the client
+while 1:
+ conn, addr = s.accept()
+ print 'Connected with ' + addr[0] + ':' + str(addr[1])
+ 
+ data = conn.recv(1024)
+ reply = 'OK...' + data
+ if not data:
+  break
+ 
+ conn.sendall(reply)
 
-print 'Connected with ' + addr[0] + ':' + str(addr[1])
+ conn.close()
+s.close()
